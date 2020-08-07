@@ -1,0 +1,95 @@
+# SQL 최적화
+
+SQL(구조적 질의 언어) 는 말 뜻 그대로 구조적인 질의 언어이다.<br/>
+<br/>
+원하는 결과를 구조적/집합적으로 선언하는 것이 SQL 문법의 시작이지만, 그 결과집합을 만드는 것은 결국 절차적일 수 밖에 없다. 결국 `프로시저`가 필요한데 이런 프로시저를 만들어 내는 DBMS 내부 엔진이 바로 `옵티마이저`이다.
+<br/><br/>
+DBMS에서 프로시저를 작성하고 컴파일해서 실행 가능한 상태로 만드는 모든 과정을 `SQL 최적화`라고 한다.
+<br/><br/>
+<br/><br/><br/><br/>
+----
+> SQL 최적화의 단계 - Parsing → 최적화 → 로우 소스 생성
+
+<br/>
+① SQL 파싱(Parsing)<br/>
+<br/>
+사용자로부터 SQL을 전달받으면 가장 먼저 SQL 파서(Parser) 가 파싱을 진행한다.<br/>
+<br/>
+- 파싱 트리 생성 : SQL 문을 구성하는 요소를 분석해서 트리 생성한다.<br/>
+- 신택스(Syntax) 체크 : 문법적인 오류가 없는지를 확인한다. <br/>
+예를 들어 키워드에 오타가 있거나, 사용할 수 없는 키워드이거나, 혹은 키워드가 아예 빠져 있는 이러한 경우를 확인하는 과정이다.<br/>
+- 시맨틱(Semantic) 체크 : 의미상 오류가 없는지를 확인한다.<br/>
+예를 들어, 접근할 수 없는 오브젝트에 관한 문법인지, 존재하지 않는 테이블 또는 컬럼을 사용한 것인지, null을 허용하지 않는 컬럼에 값이 빠져있다든지 등을 확인하는 과정이다.<br/>
+<br/>
+② SQL 최적화<br/>
+<br/>
+파싱이 끝난 뒤 최적화가 진행된다. 이때 옵티마이저(Optimizer)가 이 역할을 수행한다.<br/>
+<br/>
+SQL 옵티마이저는 수행 환경에 대한 정보를 바탕으로 다양한 실행경로를 생성/비교 한 후 가장 효율적인 단 하나의 방법을 선택한다. 데이터베이스의 성능을 결정하는 가장 핵심적인 엔진이다.<br/>
+<br/>
+③ 로우 소스 생성<br/>
+<br/>
+옵티마이저에 의해 선택된 실행경로를 실제 가능한 코드 또는 프로시저 형태로 바꾸는 단계이다.<br/>
+<br/>
+로우 소스 생성기가 이 역할을 수행한다.<br/>
+<br/>
+<br/><br/><br/><br/>
+
+---
+> SQL 옵티마이저
+
+<br/>
+SQL 옵티마이저는 사용자가 원하는 작업을 가장 효율적으로 수행할 수 있는 최적의 경로를 선택해주는 DBMS의 핵심 엔진이다.<br/>
+옵티마이저의 최적화 단계는 다음과 같은 순서로 진행된다.<br/>
+<br/>
+① 목표하는 쿼리를 수행하는 데 후보군이 될 만한 실행계획들을 검색한다.<br/>
+<br/>
+② 데이터 딕셔너리에 미리 수집해 둔 수행 환경에 대한 정보를 바탕으로 실행계획 각각의 예상 자원을 계산한다.<br/>
+<br/>
+③ 자원이 최소한으로 사용되는 실행계획을 선택한다.<br/>
+<br/>
+<br/><br/>
+<br/><br/>
+
+----
+
+> 최적화는 최적의 경로로 가장 적은 자원을 사용하는 실행을 찾아내는 것!
+
+<br/>
+DBMS에는 SQL 실행 경로 미리보기 기능이 있다. 그것이 바로 `실행 계획(Execution Plan)`이다.<br/>
+<br/>
+실행 계획을 살펴보게 되면 개발자는 작성한 SQL이 테이블을 스캔하는지, 인덱스를 스캔하는지,<br/>
+<br/>
+또 인덱스를 스캔한다면 어떤 인덱스인지를 확인할 수 있고, 예상과 다른 방식으로 처리되는 경우 실행경로를 변경할 수 있다.<br/>
+<br/>
+실행계획은 SQL Developer에서 확인할 수 있다.<br/>
+<br/>
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/28c5853b-8e72-482c-8b0d-e16c9e1f07eb/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/28c5853b-8e72-482c-8b0d-e16c9e1f07eb/Untitled.png)
+
+<br/>
+해당 쿼리는 다음과 같은 실행 계획을 갖는다.<br/>
+<br/>
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d109d866-1dec-4681-9d99-bc20cfc30299/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d109d866-1dec-4681-9d99-bc20cfc30299/Untitled.png)
+
+<br/>
+실행 계획에 따르면, 옵티마이저가 ROWID 인덱스를 선택했다.<br/>
+<br/>
+테이블을 Full 스캔하도록 `힌트`를 지정하고, 확인하면<br/>
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b81ea939-567a-4804-bf7c-bba99ca65c3e/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b81ea939-567a-4804-bf7c-bba99ca65c3e/Untitled.png)
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8484e583-707c-4e51-a07d-b08b86e20cc3/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8484e583-707c-4e51-a07d-b08b86e20cc3/Untitled.png)
+
+Cost가 위와 같이 올라가는 것을 확인할 수 있다.<br/>
+<br/>
+따라서 옵티마이저가 이 쿼리를 수행하기 위해 EMP_MANAGER_IX 인덱스를 선택한 근거가 비용(Cost)이라는 것을 알 수 있다.<br/>
+<br/>
+비용은 `쿼리가 수행되는 데 발생할 수 있는 input/output 횟수` 또는<br/>
+<br/>
+`실행하는데 걸리는 예상 소요시간`을 표현한 값이다.<br/>
+<br/>
+최적화에 올바른 방법이란, 애플리케이션의 환경에 따라 다르다.<br/>
+<br/>
+최적화를 하기 위해서는 위와 같은 힌트를 철저하게, 빈틈없이 기술해야 한다.<br/>
