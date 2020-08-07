@@ -77,7 +77,7 @@ where manager_id = 108
 해당 쿼리는 다음과 같은 실행 계획을 갖는다.<br/>
 <br/>
 
-|:---:|:---:|:---:|:---:|
+|---|:---:|:---:|:---:|
 |`OBJECT_NAME`|`OPTIONS`|`CARDINALITY`|`COST`|
 |EMPLOYEES|BY INDEX ROWID|5|2|
 |EMP_MANAGER_IX|RANGE SCAN|5|1|
