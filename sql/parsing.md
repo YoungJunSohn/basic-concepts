@@ -77,16 +77,12 @@ where manager_id = 108
 해당 쿼리는 다음과 같은 실행 계획을 갖는다.<br/>
 <br/>
 
-|---|:---:|:---:|:---:|
+
 | `OBJECT_NAME` | `OPTIONS` | `CARDINALITY` | `COST` |
+|---|:---:|:---:|:---:|
 | EMPLOYEES  |BY INDEX ROWID | 5 | 2 |
 | EMP_MANAGER_IX | RANGE SCAN | 5 | 1 |
 
-|---|:---:|:---:|:---:|
-| `OBJECT_NAME` | `OPTIONS` | `CARDINALITY` | `COST` |
-| EMPLOYEES | BY INDEX ROWID | 5  | 2 |
-| `absolute` | 위치 상 부모(조상)요소를 기준으로 배치 |  |
-| `fixed` | 브라우저 창을 기준으로 배치 |  |
 
 <br/>
 실행 계획에 따르면, 옵티마이저가 ROWID 인덱스를 선택했다.<br/>
@@ -97,8 +93,9 @@ where manager_id = 108
 from employees
 where manager_id = 108`
 
-|:---:|:---:|:---:|:---:|
+
 |`OBJECT_NAME`|`OPTIONS`|`CARDINALITY`|`COST`|
+|:---:|:---:|:---:|:---:|
 |EMPLOYEES|FULL|5|3|
 
 Cost가 위와 같이 올라가는 것을 확인할 수 있다.<br/>
