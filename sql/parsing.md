@@ -78,10 +78,16 @@ where manager_id = 108
 <br/>
 
 |---|:---:|:---:|:---:|
-|`OBJECT_NAME`|`OPTIONS`|`CARDINALITY`|`COST`|
-|EMPLOYEES|BY INDEX ROWID|5|2|
-|EMP_MANAGER_IX|RANGE SCAN|5|1|
-     
+| `OBJECT_NAME` | `OPTIONS` | `CARDINALITY` | `COST` |
+| EMPLOYEES  |BY INDEX ROWID | 5 | 2 |
+| EMP_MANAGER_IX | RANGE SCAN | 5 | 1 |
+
+| 값 | 의미 | 기본값 |
+|---|:---:|---:|
+| `static` | 유형(기준) 없음 / 배치 불가능 | `static` |
+| `relative` | 요소 자신을 기준으로 배치 |  |
+| `absolute` | 위치 상 부모(조상)요소를 기준으로 배치 |  |
+| `fixed` | 브라우저 창을 기준으로 배치 |  |
 
 <br/>
 실행 계획에 따르면, 옵티마이저가 ROWID 인덱스를 선택했다.<br/>
