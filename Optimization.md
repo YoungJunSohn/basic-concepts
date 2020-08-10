@@ -65,22 +65,38 @@ DBMS에는 SQL 실행 경로 미리보기 기능이 있다. 그것이 바로 `�
 실행계획은 SQL Developer에서 확인할 수 있다.<br/>
 <br/>
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/28c5853b-8e72-482c-8b0d-e16c9e1f07eb/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/28c5853b-8e72-482c-8b0d-e16c9e1f07eb/Untitled.png)
+HR 의 데이터를 이용한다.
+
+`select *
+from employees
+where manager_id = 108
+`
+
 
 <br/>
 해당 쿼리는 다음과 같은 실행 계획을 갖는다.<br/>
 <br/>
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d109d866-1dec-4681-9d99-bc20cfc30299/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d109d866-1dec-4681-9d99-bc20cfc30299/Untitled.png)
+
+| `OBJECT_NAME` | `OPTIONS` | `CARDINALITY` | `COST` |
+|---|:---:|:---:|:---:|
+| EMPLOYEES  |BY INDEX ROWID | 5 | 2 |
+| EMP_MANAGER_IX | RANGE SCAN | 5 | 1 |
+
 
 <br/>
 실행 계획에 따르면, 옵티마이저가 ROWID 인덱스를 선택했다.<br/>
 <br/>
 테이블을 Full 스캔하도록 `힌트`를 지정하고, 확인하면<br/>
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b81ea939-567a-4804-bf7c-bba99ca65c3e/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b81ea939-567a-4804-bf7c-bba99ca65c3e/Untitled.png)
+`select /*+ full(employees)*/ *
+from employees
+where manager_id = 108`
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8484e583-707c-4e51-a07d-b08b86e20cc3/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8484e583-707c-4e51-a07d-b08b86e20cc3/Untitled.png)
+
+|`OBJECT_NAME`|`OPTIONS`|`CARDINALITY`|`COST`|
+|:---:|:---:|:---:|:---:|
+|EMPLOYEES|FULL|5|3|
 
 Cost가 위와 같이 올라가는 것을 확인할 수 있다.<br/>
 <br/>
