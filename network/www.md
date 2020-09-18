@@ -13,7 +13,7 @@ HTTP는 웹에서 이루어지는 모든 데이터 교환의 기초이며, 클�
 보통 브라우저인 클라이언트에 의해 전송되는 메시지를 요청(requests) 이라 하고,<br/>
 서버에서 클라이언트로 전송하는 메시지를 응답(responses) 라고 한다.<br/>
 <br/>
-<img src="images/HTTP & layers.png" width="600px" height="480px" title="HTTP의 구조" alt="HTTP"></img><br/>
+<img src="/basic-concepts/images/HTTP & layers.png" width="600px" height="480px" title="HTTP의 구조" alt="HTTP"></img><br/>
 <br/>
 1990년대초에 설계된 HTTP는 지속적으로 진화해온 확장가능한 프로토콜이다.<br/>
 HTTP는 애플리케이션 계층의 프로토콜로, 신뢰 가능한 전송 프로토콜이라면 이론상 무엇이든 사용할 수 있으나,<br/>
